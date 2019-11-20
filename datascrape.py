@@ -17,10 +17,23 @@ PL_ID = "playlistId"
 ID = "id"
 PT = "pageToken"
 
-# REQUEST URLS
-CHANNEL_REQ = f"https://www.googleapis.com/youtube/v3/channels?part={CD}&{ID}={}&key={API_KEY}"
-PLAYLIST_ITEMS_REQ = f"https://www.googleapis.com/youtube/v3/playlistItems?part={CD}&{PL_ID}={}&{PT}={}&key={API_KEY}"
-VIDEO_REQ = f"https://www.googleapis.com/youtube/v3/videos?part={SNIP}&{ID}={}&key={API_KEY}"
+# # REQUEST URLS
+# CHANNEL_REQ = f"https://www.googleapis.com/youtube/v3/channels?part={CD}&{ID}={}&key={API_KEY}"
+# PLAYLIST_ITEMS_REQ = f"https://www.googleapis.com/youtube/v3/playlistItems?part={CD}&{PL_ID}={}&{PT}={}&key={API_KEY}"
+# VIDEO_REQ = f"https://www.googleapis.com/youtube/v3/videos?part={SNIP}&{ID}={}&key={API_KEY}"
+
+C_REQ = "https://www.googleapis.com/youtube/v3/channels"
+PART_STR = "?part={}"
+PARAM_STR = "&{}={}"
+KEY_STR = f"&key={API_KEY}"
+
+def construct_req(request_url, parts, params):
+    params_str = ""
+
+    for param in params:
+        params_str = "".join(params_str+PARAM_STR.format(*param))
+
+    return request_url + PART_STR.format(parts) + params_str + KEY_STR
 
 
 def get_resource(url, *params):
@@ -73,28 +86,29 @@ class YoutubeVideo():
 
 
 if __name__ == "__main__":
-    pp = pprint.PrettyPrinter(compact=True)
+    print(construct_req(C_REQ, CD, [(ID, CHANNEL_IDS[0])]))
+    # pp = pprint.PrettyPrinter(compact=True)
 
-    for channel_id in CHANNEL_IDS:
+    # for channel_id in CHANNEL_IDS:
 
-        channel_content = get_resource(CHANNEL_REQ, channel_id, API_KEY).json()
+    #     channel_content = get_resource(CHANNEL_REQ, channel_id, API_KEY).json()
 
-        uploads_id = next(recursive_lookup('uploads', channel_content), None)
+    #     uploads_id = next(recursive_lookup('uploads', channel_content), None)
         
-        video_urls = []
-        page_token = ""
+    #     video_urls = []
+    #     page_token = ""
 
-        while(page_token is not None):
-            playlist_content = get_resource(PLAYLIST_CONTENT_REQ, uploads_id, page_token, API_KEY).json()
+    #     while(page_token is not None):
+    #         playlist_content = get_resource(PLAYLIST_CONTENT_REQ, uploads_id, page_token, API_KEY).json()
 
-            video_urls += list(recursive_lookup('videoId', playlist_content))
+    #         video_urls += list(recursive_lookup('videoId', playlist_content))
             
-            page_token = next(recursive_lookup('nextPageToken', playlist_content), None)
+    #         page_token = next(recursive_lookup('nextPageToken', playlist_content), None)
 
-        # print(video_urls)
+    #     # print(video_urls)
 
-        for url in video_urls:
-            video = get_resource
+    #     for url in video_urls:
+    #         video = get_resource
 
         
 
