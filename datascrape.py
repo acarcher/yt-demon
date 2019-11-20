@@ -1,9 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import pprint
-
-# API KEY
-API_KEY = "AIzaSyCbIdhM3sBth8tCJ7Nln9XQ19iipJSM5PM"
+from .apikey import API_KEY
 
 # CHANNEL IDS
 CHANNEL_IDS = ["UCFmL725KKPx2URVPvH3Gp8w"]
@@ -22,10 +20,14 @@ PT = "pageToken"
 # PLAYLIST_ITEMS_REQ = f"https://www.googleapis.com/youtube/v3/playlistItems?part={CD}&{PL_ID}={}&{PT}={}&key={API_KEY}"
 # VIDEO_REQ = f"https://www.googleapis.com/youtube/v3/videos?part={SNIP}&{ID}={}&key={API_KEY}"
 
-C_REQ = "https://www.googleapis.com/youtube/v3/channels"
+BASE_URL = "https://www.googleapis.com/youtube/v3/"
+CHANNELS_API = "channels"
+# C_REQ = "https://www.googleapis.com/youtube/v3/channels"
 PART_STR = "?part={}"
 PARAM_STR = "&{}={}"
 KEY_STR = f"&key={API_KEY}"
+
+
 
 def construct_req(request_url, parts, params):
     params_str = ""
